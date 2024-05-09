@@ -1,5 +1,5 @@
 
-# al crear nuestro nest nos aparecen warning en algunos archivos para que no suceda en este proyecto de aprendizaje eliminamos de nuestro proyecto algunos comando de nuestro package.json (prettier y otros)
+# Al crear nuestro nest nos aparecen warning en algunos archivos para que no suceda en este proyecto de aprendizaje eliminamos de nuestro proyecto algunos comando de nuestro package.json (prettier y otros)
 
 ## Levantar base de datos
 `docker compose up -d`
@@ -21,3 +21,22 @@ Despues se agrega en el appmodule en la parte de imports
 1. npm i @nestjs/config
 2. En nuestro app.module agregar la configuracion en los imports `ConfigModule.forRoot()` esto va ante que nuestro mongomodule.
 3. Cambiamos nuestro localhost por la variable de entorno ``process.env.MONGO_URI``
+
+# user.entity agregamos la configuracion de las prop de nuestra variables y exportamos
+
+# En auth.module importamos y agregamos la configuracion hecha
+
+# Creamos nuestro create-user.dto.ts y arreglamos los errores que ocaciona cambiar el nombre
+
+# Hacemos un `npm i class-validator class-transformer` y agregamos a la configuracion global en main.ts
+
+app.useGlobalPipes(
+ new ValidationPipe({
+ whitelist: true,
+ forbidNonWhitelisted: true,
+ })
+);
+
+-- Con esto solo recibimos datos de las variables que establecimos, como por ej name y no nombre
+
+# En nuestro create-user.dto podemos usar validadores de datos
