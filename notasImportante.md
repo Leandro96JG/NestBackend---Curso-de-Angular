@@ -40,3 +40,9 @@ app.useGlobalPipes(
 -- Con esto solo recibimos datos de las variables que establecimos, como por ej name y no nombre
 
 # En nuestro create-user.dto podemos usar validadores de datos
+
+
+# Para encriptar nuestros datos en una sola via
+`npm i bcryptjs`
+Importamos en nuestro auth service y realizamos el siguiente comando
+`npm i --save-dev @types/bcryptjs`
