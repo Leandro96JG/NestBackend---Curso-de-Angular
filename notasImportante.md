@@ -46,3 +46,8 @@ app.useGlobalPipes(
 `npm i bcryptjs`
 Importamos en nuestro auth service y realizamos el siguiente comando
 `npm i --save-dev @types/bcryptjs`
+
+# Para usar jwt hay que instalar el npm
+`npm i --save @nestjs/jwt`
+
+# La firma del jwt siempre es secreta

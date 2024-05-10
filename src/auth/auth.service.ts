@@ -6,15 +6,18 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './entities/user.entity';
 import * as bcryptjs from "bcryptjs";
+import { JwtService } from '@nestjs/jwt';
+import { JwtPayLoad } from './interfaces/jwt-payLoad';
 
 
 @Injectable()
 export class AuthService {
 
-  
+  //lo mismo que en angular para usar el httpclient por ej
   constructor(
     @InjectModel(User.name,)
-    private userModel:Model<User>) {
+    private userModel:Model<User>,
+    private jwtService: JwtService,) {
     
   }
 
@@ -78,7 +81,7 @@ export class AuthService {
 
      return {
       ...rest,
-      token:'ABC-123'
+      token: this.getJwt({id:user.id})
      }
     //debe regresar el User y token de acceso
     //el token de acceso debe ser un JWT(3jjjasjd.ajsdjas.12sdfs)
@@ -101,4 +104,10 @@ export class AuthService {
   remove(id: number) {
     return `This action removes a #${id} auth`;
   }
+//Para usar jwt
+  getJwt(payLoad:JwtPayLoad){
+    const token = this.jwtService.sign(payLoad);
+    return token;
+  }
+
 }
