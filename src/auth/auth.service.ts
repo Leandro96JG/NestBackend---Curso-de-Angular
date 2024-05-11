@@ -1,13 +1,12 @@
-import { LoginDto } from './dto/login.dto';
 import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
-import { CreatUserDto } from './dto/create-user.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './entities/user.entity';
 import * as bcryptjs from "bcryptjs";
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayLoad } from './interfaces/jwt-payLoad';
+import { LoginResponse } from './interfaces/login-response';
+import { RegisterDto, UpdateAuthDto, CreatUserDto, LoginDto } from './dto/';
 
 
 @Injectable()
@@ -65,12 +64,30 @@ export class AuthService {
 
   }
 
-  async login(loginDto:LoginDto){
+  async register(registerDto:RegisterDto):Promise<LoginResponse>{
+     
+    
+      const user = await this.create(registerDto);
+      // const user = await this.create({email: registerDto.email, name: registerDto.name, password:registerDto.password});
+      
+
+     return {
+      user:user,
+      token: this.getJwt({id:user._id})
+     }
+
+    }
+
+
+
+  async login(loginDto:LoginDto):Promise<LoginResponse>{
     
 
     const {email, password} = loginDto;
 //para la ejecucion del codigo hasta que resuelva esto
     const user = await this.userModel.findOne({email:email});
+    console.log(user);
+    
     if(!user)
       throw new UnauthorizedException('No valid credentials - email')
     if(!bcryptjs.compareSync(password, user.password)){
@@ -80,7 +97,7 @@ export class AuthService {
     const {password:_,...rest} = user.toJSON();
 
      return {
-      ...rest,
+      user: rest,
       token: this.getJwt({id:user.id})
      }
     //debe regresar el User y token de acceso
@@ -89,8 +106,16 @@ export class AuthService {
     
   }
 
-  findAll() {
-    return `This action returns all auth`;
+  findAll(): Promise<User[]> {
+    //Regresar todos los usuarios
+    return this.userModel.find();
+  }
+
+ async findUserById(id:string){
+    const user = await this.userModel.findById(id);
+    console.log('finduserbyid: ',user);
+    const { password, ...rest } = user.toJSON();
+    return rest;
   }
 
   findOne(id: number) {

@@ -51,3 +51,6 @@ Importamos en nuestro auth service y realizamos el siguiente comando
 `npm i --save @nestjs/jwt`
 
 # La firma del jwt siempre es secreta
+
+# Crear un guard en nest
+`nest g gu <nombre>`
